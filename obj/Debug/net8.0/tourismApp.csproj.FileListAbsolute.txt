@@ -31,3 +31,4 @@
 /Users/sagar_xeetree/Backend/tourismApp/obj/Debug/net8.0/tourismApp.pdb
 /Users/sagar_xeetree/Backend/tourismApp/obj/Debug/net8.0/tourismApp.genruntimeconfig.cache
 /Users/sagar_xeetree/Backend/tourismApp/obj/Debug/net8.0/ref/tourismApp.dll
+/Users/sagar_xeetree/Backend/tourismApp/obj/Debug/net8.0/tourismApp.sourcelink.json
