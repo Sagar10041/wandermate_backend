@@ -11,9 +11,7 @@ namespace tourismApp.Data
     {
          public ApplicationDbContext(DbContextOptions dbContextOptions) 
         : base (dbContextOptions)
-        {
-
-            
+        {    
         }
 
         public DbSet <Hotel> Hotel {get; set;}
