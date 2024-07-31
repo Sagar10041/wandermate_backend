@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace tourismApp.Models
 {
          [Table("Hotel")]
     public class Hotel
     {
-    [Key]    
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]    
         public int Id { get; set; }
         
         public string Name { get; set; } = String.Empty;
