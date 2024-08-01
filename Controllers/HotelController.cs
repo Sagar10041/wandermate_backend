@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using tourismApp.Data;
+using tourismApp.Models;
 
 namespace tourismApp.Controllers
 {
@@ -32,6 +33,62 @@ namespace tourismApp.Controllers
                 return NotFound();
             }
             return Ok(hotel);
+        }
+
+        [HttpPost]
+
+        public IActionResult CreateHotel ([FromBody] Hotel hotel) {
+
+            if (hotel == null ) {
+
+                return BadRequest();
+
+            }
+            _context.Hotel.Add(hotel);
+            _context.SaveChanges();
+            
+            return CreatedAtAction(nameof(GetById), new {id = hotel.Id},hotel);
+        }
+
+        [HttpPut("{id}")]
+
+        public IActionResult UpdateHotel (int id ,[FromBody] Hotel hotel){
+
+            var hotelInDatabase = _context.Hotel.Find(id);
+            if (hotelInDatabase == null){
+                return NotFound();
+            }
+
+            hotelInDatabase.Name = hotel.Name;
+            hotelInDatabase.Name = hotel.Name;
+            hotelInDatabase.Price = hotel.Price;
+            hotelInDatabase.Image = hotel.Image;
+            hotelInDatabase.Description = hotel.Description;
+            hotelInDatabase.Rating = hotel.Rating;
+            hotelInDatabase.FreeCancellation = hotel.FreeCancellation;
+            hotelInDatabase.ReserveNow = hotel.ReserveNow;
+
+            _context.Hotel.Update(hotelInDatabase);
+            _context.SaveChanges();
+
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+
+        public IActionResult DeleteHotel ([FromRoute] int id) {
+
+            var hotelToDelete = _context.Hotel.Find(id);
+
+            if (hotelToDelete == null){
+                return NotFound();
+            }
+
+            _context.Hotel.Remove(hotelToDelete);
+            _context.SaveChanges();
+
+            return NoContent();
         }
     }
 }
