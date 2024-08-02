@@ -47,7 +47,7 @@ namespace tourismApp.Controllers
             _context.Hotel.Add(hotel);
             _context.SaveChanges();
             
-            return CreatedAtAction(nameof(GetById), new {id = hotel.Id},hotel);
+            return Ok(hotel);
         }
 
         [HttpPut("{id}")]
