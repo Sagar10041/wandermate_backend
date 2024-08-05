@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tourismApp.Data;
+using tourismApp.DTOs.HotelDTO;
 using tourismApp.Models;
 
 namespace tourismApp.Controllers
@@ -23,34 +24,70 @@ namespace tourismApp.Controllers
         public async Task<IActionResult> GetAll() 
         {
             var hotels = await _context.Hotel.ToListAsync();
-            return Ok(hotels);
+
+            var hotelDTO = hotels.Select( hotel => new HotelDto {
+
+                Id = hotel.Id,
+                Name = hotel.Name,
+                Price=hotel.Price,
+                Description=hotel.Description,
+                Rating =hotel.Rating,
+                FreeCancellation =hotel.FreeCancellation,
+                ReserveNow = hotel.ReserveNow,
+                
+            }).ToList();
+            return Ok(hotelDTO);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id) 
         {
-            var hotel = await _context.Hotel.FindAsync(id);
+             var hotel = await _context.Hotel.Where(h => h.Id == id)
+             .Select(h => new HotelDto
+                {
+                    Id = h.Id,
+                    Name = h.Name,
+                    Price = h.Price,
+                    Image = h.Image,
+                    Description = h.Description,
+                    Rating = h.Rating,
+                    FreeCancellation = h.FreeCancellation,
+                    ReserveNow = h.ReserveNow
+                })
+                .FirstOrDefaultAsync();
 
-            if (hotel == null)
+             if (hotel == null)
             {
                 return NotFound();
             }
+
             return Ok(hotel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateHotel([FromBody] Hotel hotel) 
+        public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDto hotelDto) 
         {
-            if (!ModelState.IsValid)
+           if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            var hotel = new Hotel
+            {
+                Name = hotelDto.Name,
+                Price = hotelDto.Price,
+                Image = hotelDto.Image,
+                Description = hotelDto.Description,
+                Rating = hotelDto.Rating,
+                FreeCancellation = hotelDto.FreeCancellation,
+                ReserveNow = hotelDto.ReserveNow
+            };
 
             try
             {
                 await _context.Hotel.AddAsync(hotel);
                 await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetById), new { id = hotel.Id }, hotel);
+                return CreatedAtAction(nameof(GetById), new { id = hotel.Id }, hotelDto);
             }
             catch (Exception ex)
             {
@@ -60,22 +97,22 @@ namespace tourismApp.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHotel(int id, [FromBody] Hotel hotel)
+        public async Task<IActionResult> UpdateHotel(int id, [FromBody] UpdateHotelDto hotelDto)
         {
 
-            var hotelInDatabase = await _context.Hotel.FindAsync(id);
+           var hotelInDatabase = await _context.Hotel.FindAsync(id);
             if (hotelInDatabase == null)
             {
                 return NotFound();
             }
 
-            hotelInDatabase.Name = hotel.Name;
-            hotelInDatabase.Price = hotel.Price;
-            hotelInDatabase.Image = hotel.Image;
-            hotelInDatabase.Description = hotel.Description;
-            hotelInDatabase.Rating = hotel.Rating;
-            hotelInDatabase.FreeCancellation = hotel.FreeCancellation;
-            hotelInDatabase.ReserveNow = hotel.ReserveNow;
+            hotelInDatabase.Name = hotelDto.Name;
+            hotelInDatabase.Price = hotelDto.Price;
+            hotelInDatabase.Image = hotelDto.Image;
+            hotelInDatabase.Description = hotelDto.Description;
+            hotelInDatabase.Rating = hotelDto.Rating;
+            hotelInDatabase.FreeCancellation = hotelDto.FreeCancellation;
+            hotelInDatabase.ReserveNow = hotelDto.ReserveNow;
 
             _context.Entry(hotelInDatabase).State = EntityState.Modified;
 
@@ -92,7 +129,7 @@ namespace tourismApp.Controllers
                 else
                 {
                     throw;
-                }
+            }
             }
             catch (Exception ex)
             {

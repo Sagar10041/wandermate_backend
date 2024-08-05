@@ -16,5 +16,7 @@ namespace tourismApp.Data
 
         public DbSet <Hotel> Hotel {get; set;}
 
+        public DbSet <HotelReviews> HotelReviews {get; set;}
+
     }
 }

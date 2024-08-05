@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using tourismApp.Models;
 
-namespace tourismApp.Models
+namespace tourismApp.DTOs.HotelDTO
 {
-         [Table("Hotel")]
-    public class Hotel
+    public class HotelDto
     {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]    
         public int Id { get; set; }
         
         public string Name { get; set; } = String.Empty;
@@ -27,10 +23,6 @@ namespace tourismApp.Models
         public bool FreeCancellation {get; set;}
     
         public bool ReserveNow {get; set;}
-
-
-        public List<HotelReviews> HotelReviews {get; set;} =new List<HotelReviews>();
-
 
     }
 }
