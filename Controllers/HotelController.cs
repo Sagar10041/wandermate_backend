@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tourismApp.Data;
@@ -9,7 +10,7 @@ using tourismApp.DTOs.HotelDTO;
 using tourismApp.Models;
 
 namespace tourismApp.Controllers
-{
+{   [Authorize]
     [Route("api/hotels")]
     [ApiController]
     public class HotelController : ControllerBase
