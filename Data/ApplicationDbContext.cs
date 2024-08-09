@@ -20,5 +20,33 @@ namespace tourismApp.Data
 
         public DbSet <Users> Users {get; set;}
 
+        public DbSet<HotelBooking> HotelBookings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Configure many-to-many 
+            modelBuilder.Entity<HotelBooking>()
+                .HasOne(hb => hb.Hotel)
+                .WithMany(h => h.HotelBookings)
+                .HasForeignKey(hb => hb.HotelId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<HotelBooking>()
+                .HasOne(hb => hb.User)
+                .WithMany(u => u.HotelBookings)
+                .HasForeignKey(hb => hb.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+             modelBuilder.Entity<Users>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            
+
+            
+        }
+
     }
 }

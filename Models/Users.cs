@@ -22,5 +22,9 @@ namespace tourismApp.Models
         public string Password {get; set;} = String.Empty;
 
 
+         public List<HotelBooking> HotelBookings {get; set;} =new List<HotelBooking>();
+
+
+
     }
 }

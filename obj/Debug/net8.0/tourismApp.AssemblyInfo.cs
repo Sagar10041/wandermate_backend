@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("tourismApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d287a18c5baf735eada9b176744f017a7045a553")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2a2b8e4a2a7acd4960df5ae52099b3759ef181c0")]
 [assembly: System.Reflection.AssemblyProductAttribute("tourismApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("tourismApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
