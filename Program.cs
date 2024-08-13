@@ -47,13 +47,16 @@ builder.Services.AddSwaggerGen(option => // for checking auth in swagger
     });
 });
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>{
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+builder.Services.AddControllers()
+.AddNewtonsoftJson(options =>{
+    options.SerializerSettings.ReferenceLoopHandling = 
+    Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }
 
 );
 
-builder.Services.AddIdentity<AppUser,IdentityRole>(options =>{
+builder.Services.AddIdentity<AppUser,IdentityRole>(
+    options =>{
     options.Password.RequireDigit=true;
     options.Password.RequireLowercase=true;
     options.Password.RequireNonAlphanumeric=true;
@@ -69,11 +72,13 @@ builder.Services.AddAuthentication(options =>
     options.DefaultForbidScheme =
     options.DefaultScheme =
     options.DefaultSignInScheme =
-    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignOutScheme = 
+    JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(
     options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.TokenValidationParameters =
+     new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
@@ -81,7 +86,8 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["JWT:Audience"],
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+            System.Text.Encoding.UTF8.
+            GetBytes(builder.Configuration["JWT:SigningKey"])
         )
     };
 }
