@@ -23,6 +23,7 @@ public TokenService(IConfiguration config)
 
 public string CreateToken(AppUser user){
     var claims = new List<Claim>{
+    new Claim(JwtRegisteredClaimNames.NameId,user.Id),
     new Claim(JwtRegisteredClaimNames.Email,user.Email),
     new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
     };

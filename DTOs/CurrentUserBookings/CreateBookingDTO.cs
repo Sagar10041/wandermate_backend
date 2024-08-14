@@ -4,15 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace tourismApp.DTOs.HotelBookingDTO
+namespace tourismApp.DTOs.CurrentUserBookings
 {
-    public class CreateHotelBookingDto
+    public class CreateBookingDTO
     {
-        [Required]
+         [Required]
         public int HotelId { get; set; }
-
-        [Required]
-        public string UserId { get; set; }
 
         [Required]
         public DateTime BookingDate { get; set; }
@@ -31,4 +28,3 @@ namespace tourismApp.DTOs.HotelBookingDTO
         public decimal TotalPrice { get; set; }
     }
 }
-

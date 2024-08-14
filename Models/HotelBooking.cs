@@ -13,7 +13,7 @@ namespace tourismApp.Models
         public int HotelId { get; set; }
         public Hotel Hotel { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public AppUser AppUser { get; set; }
 
         public DateTime BookingDate { get; set; }
