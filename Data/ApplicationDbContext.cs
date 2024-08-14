@@ -20,29 +20,26 @@ namespace tourismApp.Data
 
         public DbSet <HotelReviews> HotelReviews {get; set;}
 
-        // public DbSet<HotelBooking> HotelBookings { get; set; }
+        public DbSet<HotelBooking> HotelBookings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // // Configure many-to-many 
-            // builder.Entity<HotelBooking>()
-            //     .HasOne(hb => hb.Hotel)
-            //     .WithMany(h => h.HotelBookings)
-            //     .HasForeignKey(hb => hb.HotelId)
-            //     .OnDelete(DeleteBehavior.Restrict);
+            // Configure many-to-many 
+            builder.Entity<HotelBooking>()
+                .HasOne(hb => hb.Hotel)
+                .WithMany(h => h.HotelBookings)
+                .HasForeignKey(hb => hb.HotelId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // builder.Entity<HotelBooking>()
-            //     .HasOne(hb => hb.User)
-            //     .WithMany(u => u.HotelBookings)
-            //     .HasForeignKey(hb => hb.UserId)
-            //     .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<HotelBooking>()
+                .HasOne(hb => hb.AppUser)
+                .WithMany(u => u.HotelBookings)
+                .HasForeignKey(hb => hb.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // builder.Entity<Users>()
-            //     .HasIndex(u => u.Email)
-            //     .IsUnique();
-
+            
 
              List<IdentityRole> roles = new List<IdentityRole>{
                 new IdentityRole{

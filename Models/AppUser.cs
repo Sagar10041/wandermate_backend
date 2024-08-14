@@ -8,6 +8,7 @@ namespace tourismApp.Models
 {
     public class AppUser : IdentityUser
     {
-       
+       public List<HotelBooking> HotelBookings {get; set;} =new List<HotelBooking>();
+
     }
 }
