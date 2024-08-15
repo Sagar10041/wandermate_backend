@@ -66,7 +66,7 @@ namespace tourismApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDto hotelDto) 
+        public async Task<IActionResult> CreateHotel([FromBody] Hotel hotelDto) 
         {
            if (!ModelState.IsValid)
             {

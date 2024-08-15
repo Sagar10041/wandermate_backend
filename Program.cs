@@ -11,6 +11,9 @@ using tourismApp.Models;
 using Microsoft.AspNetCore.Identity;
 using tourismApp.Interface;
 using tourismApp.Service;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using tourismApp.Emailsender;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,7 +66,7 @@ builder.Services.AddIdentity<AppUser,IdentityRole>(
     options.Password.RequireUppercase=true;
     options.Password.RequiredLength=12;
 })
-.AddEntityFrameworkStores<ApplicationDbContext>();
+.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();;
 
 builder.Services.AddAuthentication(options =>
 {
@@ -99,13 +102,21 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-        builder =>
+    // options.AddPolicy("AllowSpecificOrigin",
+    //     builder =>
+    //     {
+    //         builder.WithOrigins("http://localhost:5173") // Your React app's URL
+    //                .AllowAnyMethod()
+    //                .AllowAnyHeader()
+    //                .AllowCredentials(); // Allow credentials
+    //     });
+
+    options.AddPolicy("AllowAll",
+        policy =>
         {
-            builder.WithOrigins("http://localhost:5173") // Your React app's URL
-                   .AllowAnyMethod()
-                   .AllowAnyHeader()
-                   .AllowCredentials(); // Allow credentials
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
         });
 });
 
@@ -124,6 +135,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+
+
 
 // Session management
 // builder.Services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
@@ -150,9 +166,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowSpecificOrigin");
+//app.UseCors("AllowSpecificOrigin");
 
-// app.UseCors("AllowAll");
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseAuthentication(); // Add authentication middleware
 app.UseAuthorization(); // Add authorization middleware

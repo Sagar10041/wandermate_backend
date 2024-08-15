@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -17,25 +16,24 @@ namespace tourismApp.Controllers
     [Authorize]
     [Route("api/userbookings")]
     [ApiController]
-    public class UserHotelBooking : ControllerBase
+    public class UserHotelBookingController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        
 
-        public UserHotelBooking(ApplicationDbContext context, UserManager<AppUser> userManager)
+        public UserHotelBookingController(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
-            _userManager = userManager;
-        }
-
-       
+            _userManager = userManager;}
+           
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var user = User.GetUserId();
+            var userId = User.GetUserId(); // Ensure this extension method is defined properly
             var bookings = await _context.HotelBookings
-                .Where(hb => hb.UserId == user)
+                .Where(hb => hb.UserId == userId)
                 .Include(hb => hb.Hotel)
                 .Include(hb => hb.AppUser)
                 .ToListAsync();
@@ -63,7 +61,7 @@ namespace tourismApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = User.GetUserId();
+            var userId = User.GetUserId(); // Ensure this extension method is defined properly
             var hotel = await _context.Hotel.FindAsync(bookingDto.HotelId);
 
             if (hotel == null)
@@ -74,7 +72,7 @@ namespace tourismApp.Controllers
             var booking = new HotelBooking
             {
                 HotelId = bookingDto.HotelId,
-                UserId = user, // Automatically set the current user's ID
+                UserId = userId, // Automatically set the current user's ID
                 BookingDate = bookingDto.BookingDate,
                 Duration = bookingDto.Duration,
                 Checkin = bookingDto.Checkin,
@@ -90,13 +88,18 @@ namespace tourismApp.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBooking(int id, [FromBody] UpdateHotelBookingDto bookingDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = await _userManager.GetUserAsync(User);
             var bookingInDatabase = await _context.HotelBookings
                 .Where(hb => hb.Id == id && hb.UserId == user.Id)
@@ -118,6 +121,7 @@ namespace tourismApp.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -132,14 +136,12 @@ namespace tourismApp.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
-            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBooking([FromRoute] int id)
+        public async Task<IActionResult> DeleteBooking(int id)
         {
             var user = await _userManager.GetUserAsync(User);
             var bookingToDelete = await _context.HotelBookings
@@ -155,13 +157,15 @@ namespace tourismApp.Controllers
             {
                 _context.HotelBookings.Remove(bookingToDelete);
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
-            return NoContent();
         }
+
+       
+        
     }
 }

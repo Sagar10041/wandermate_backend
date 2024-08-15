@@ -126,3 +126,7 @@
 /Users/sagar_xeetree/Backend/tourismApp/bin/Debug/net8.0/Newtonsoft.Json.dll
 /Users/sagar_xeetree/Backend/tourismApp/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
 /Users/sagar_xeetree/Backend/tourismApp/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/sagar_xeetree/Backend/tourismApp/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/Users/sagar_xeetree/Backend/tourismApp/bin/Debug/net8.0/MailKit.dll
+/Users/sagar_xeetree/Backend/tourismApp/bin/Debug/net8.0/MimeKit.dll
+/Users/sagar_xeetree/Backend/tourismApp/bin/Debug/net8.0/System.Formats.Asn1.dll
